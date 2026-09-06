@@ -31,13 +31,13 @@ public:
 
             int start = reservations[i].first;
             int end = reservations[i].second;
-            
+
             // mean heap is a queue with priority to min numbers so treat it like one
             // remove kiosks that are already free
             while (!minHeap.empty() && minHeap.top() <= start){
                 minHeap.pop();
             }
-            
+
             minHeap.push(end);
 
             if(minHeap.size() > kiosk){
