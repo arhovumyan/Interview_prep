@@ -2,12 +2,12 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "C/C++ Runner: Debug Session",
+      "name": "Debug delivery.cpp",
       "type": "lldb",
       "request": "launch",
-      "args": [],
-      "cwd": "/Users/aro/Documents/interviewPrep/Google",
-      "program": "/Users/aro/Documents/interviewPrep/Google/build/Debug/outDebug"
+      "program": "${workspaceFolder}/deliverySlot/main",
+      "cwd": "${workspaceFolder}/deliverySlot",
+      "args": []
     }
   ]
 }
