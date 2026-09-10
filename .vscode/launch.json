@@ -2,11 +2,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug delivery.cpp",
+      "name": "Debug DeliverySlotConflictDetector.cpp",
       "type": "lldb",
       "request": "launch",
-      "program": "${workspaceFolder}/deliverySlot/main",
-      "cwd": "${workspaceFolder}/deliverySlot",
+      "program": "${workspaceFolder}/Level1/01_DeliverySlotConflictDetector/main",
+      "cwd": "${workspaceFolder}/Level1/01_DeliverySlotConflictDetector",
       "args": []
     }
   ]
