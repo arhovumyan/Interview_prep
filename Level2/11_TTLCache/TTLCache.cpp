@@ -28,8 +28,8 @@ class DataHandle {
         for (const Data& x : storage){
             if (key == x.key) {
                 if (now >= x.expires_at) return -1;
+                return x.value;
             }
-            return x.value;
         }
         return -1;
     }
@@ -43,10 +43,14 @@ int main () {
     {3, 99999, 8},
     {4, 12345, 10}
     };
-    
-    DataHandle handler; // create an object named handler
-    handler.put(item1);
-    std::cout << handler.get(1, 2) << std::endl;
+
+    DataHandle handler;
+
+    for (const Data& x : items){
+        handler.put(x);
+    }
+
+    std::cout << handler.get(3, 79) << std::endl;
 
     return 0;
 }
