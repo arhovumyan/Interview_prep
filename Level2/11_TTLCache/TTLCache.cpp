@@ -16,11 +16,19 @@ struct Data {
     int expires_at;
 };
 
-std::vector<Data> storage;
 
 class DataHandle {
+    private:
+    std::vector<Data> storage;
+
     public:
     void put(const Data& item) {
+        for ( Data& x : storage){
+            if (x.key == item.key){
+                x = item; 
+                return;
+            }
+        }
         storage.push_back(item);
     }
 
