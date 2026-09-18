@@ -9,6 +9,11 @@
 // im thinking of a Struct that would contain all these data like this
 #include <vector>
 #include <iostream>
+#include <unordered_map>
+#include <queue>
+#include <functional>
+#include <pair>
+
 
 struct Data {
     int key;
@@ -16,49 +21,78 @@ struct Data {
     int expires_at;
 };
 
+struct Expiration {
+    int expires_at;
+    int key;
+    int version;
+
+    bool operator>(const Expiration& other) const {
+        return other.expires_at > other.expires_at;
+    }
+};
 
 class DataHandle {
-    private:
-    std::vector<Data> storage;
-
     public:
-    void put(const Data& item) {
-        for ( Data& x : storage){
-            if (x.key == item.key){
-                x = item; 
-                return;
-            }
+    std::unordered_map<int,Data> storage;
+    using Compare = bool(*)(const Expiration&, const Expiration);
+    // min heap 
+    std::priority_queue<Expiration,std::vector<Expiration>,CompareExpiration> expiration;
+    
+    int nextVersion = 0;
+
+    // AI GENERATED CODE
+    void cleanup(int now){
+        while (!expiration.empty() && expiration.top().expires_at <= now){
+            Expiration old = expiration.top();
+            expiration.pop();
+
+            if (!storage.contains(old.key)) { continue;}
+
+            
+            // key is already gone
+            if (!storage.contains(old.key)) { continue;}
+
+            // this heap entry belongs to an older version
+            if (storage[old.key].version != old.version) { continue;}
+
+            // expired current version
+            storage.erase(old.key);
         }
-        storage.push_back(item);
+    }
+    // AI GENERATED CODE
+
+    void put(const Data& item) {
+        storage[item.key] = {
+            value,
+            expires_at,
+            nextVersion
+        };
+
+        expiration.push({
+            expires_at,
+            key,
+            nextVersion
+        });
     }
 
     int get(int key, int now){
-        for (const Data& x : storage){
-            if (key == x.key) {
-                if (now >= x.expires_at) return -1;
-                return x.value;
-            }
-        }
-        return -1;
+        cleanup(now);
+
+        if (!storage.contains(key)) return -1;
+        return storage[key].value;
     }
 };
 
 int main () {
     
-    std::vector<Data> items = {
-    {1, 131232, 3},
-    {2, 54321, 5},
-    {3, 99999, 8},
-    {4, 12345, 10}
-    };
+    DataHandle hander;
 
-    DataHandle handler;
+    handler.put(1,123123, 3);
+    handler.put(2, 54321, 5);
+    handler.put(3, 99999, 8);
+    handler.put(4,12345, 10);
 
-    for (const Data& x : items){
-        handler.put(x);
-    }
-
-    std::cout << handler.get(3, 79) << std::endl;
+    std::cout << handler.get(3, 7) << std::endl;
 
     return 0;
 }
