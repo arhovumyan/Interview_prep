@@ -20,7 +20,7 @@ int getTotalSize(const std::string id, const std::unordered_map<std::string, Nod
     
     int total = currNode.size;
 
-    for (const std::string& child_id : currNode.child_ids){
+    for (const std::string& child_id : nodes.child_ids){
         total += getTotalSize(child_id, nodes);
     }
 

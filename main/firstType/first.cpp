@@ -16,21 +16,11 @@ time is less than the current first, we return a false.
 #include <vector>
 #include <queue>
 
-struct Reservation {
-    int startTime;
-    int endTime;
-};
 
-std::vector<std::pair<int,int>> storage;
-
-void put(Reservation car){
-    storage.push_back({car.startTime, car.endTime});
-}
-
-int checker() {
+int checker(std::vector<std::pair<int,int>> storage) {
     // sort our storage
     std::sort(storage.begin(), storage.end());
-    // min heap
+    // min heap for only the end time, this is not storing the start time
     std::priority_queue<int,std::vector<int>,std::greater<int>> cars;
 
     for (int i = 0; i < storage.size(); i++){
@@ -47,19 +37,15 @@ int checker() {
 
 int main () {
 
-    Reservation car1 = {1,1};
-    Reservation car2 = {2,3};
-    Reservation car4 = {4,5};
-    Reservation car3 = {6,56};
-    Reservation car5 = {1000,1023};
+    std::vector<std::pair<int,int>> storage = {
+        {1, 1},
+        {2, 3},
+        {4, 5},
+        {6, 56},
+        {1000, 1023}
+    };
 
-    put(car1);
-    put(car2);
-    put(car3);
-    put(car4);
-    put(car5);
-
-    std::cout << checker() << std::endl;
+    std::cout << checker(storage) << std::endl;
 
     return 0;
 }
