@@ -43,43 +43,36 @@ struct Employee {
 
 std::unordered_map<int, int> employees;
 
+// stores everyone in a hashmap
 void storingEmployees(Employee worker) {
     employees[worker.employee_id] = worker.manager_id;
 }
 
+// sees who is managing the current emp
 std::queue<int> roster(int employee_id) {
-
     std::queue<int> managers;
-
     while (employees[employee_id] != -1) {
 
         employee_id = employees[employee_id];
-
         managers.push(employee_id);
     }
-
     return managers;
 }
 
+// sees the first common manager emp1 and emp2 have
 int closestManager(int employee1, int employee2) {
     std::unordered_set<int> managers1;
 
     while (true) {
         managers1.insert(employee1);
-
-        if (employees[employee1] == -1)
-            break;
-
+        if (employees[employee1] == -1) break;
+        // emp1 = its manager, keep doing than until emp_id = -1 
         employee1 = employees[employee1];
     }
 
     while (true) {
-        if (managers1.contains(employee2))
-            return employee2;
-
-        if (employees[employee2] == -1)
-            break;
-
+        if (managers1.contains(employee2)) return employee2;
+        if (employees[employee2] == -1) break;
         employee2 = employees[employee2];
     }
     return -1;
