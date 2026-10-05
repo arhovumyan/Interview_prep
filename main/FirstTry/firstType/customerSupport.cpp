@@ -29,30 +29,44 @@ we can sort our hashmap by its priority
 */
 #include <vector>
 #include <iostream>
-#include <unordered_map>
 #include <queue>
+#include <tuple>
+#include <utility>
 
-struct eachCustomer {
-  int cusomer_id;
-  int priority;
-};
 
 class Customers{
 public:
-  std::unordered_map<int, int> customers;
-  std::priority_queue<std::vector<std::greater<int>>> minheap;
+  std::queue<int> result;
+  std::priority_queue<std::tuple<int, int, int>,
+                      std::vector<std::tuple<int, int, int>>,
+                      std::greater<std::tuple<int, int, int>>>
+      minHeap;
+  int order = 0;
 
+  void addTicket(int priority, int customerId) {
+    minHeap.push({priority, customerId, order});
+    order++;
+  }
+
+  int processNext() {
+    auto current = minHeap.top();
+    minHeap.pop();
+    return std::get<2>(current);
+  }
 };
 
 int main() {
 
   Customers input;
 
-  std::vector<int> custos {
-    1,2,3,4,5,6, 4, 4,
-  };
+  std::vector<std::pair<int, int>> customs{
+      {101, 3}, {102, 1}, {103, 2}, {104, 1}};
 
-  std::cout << input.customerSupport(custos) << std::endl;
+  for (auto currPair : customs) {
+    input.addTicket(currPair.first, currPair.second);
+  }
+  std::cout << "Currently highest priority ticket is " << input.processNext()
+            << std::endl;
   
   return 0;
 }
